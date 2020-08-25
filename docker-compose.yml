@@ -1,0 +1,17 @@
+version: "3.8"
+
+volumes:
+  instabot-mongodb-data:
+    driver: local
+
+services:
+  instabot-mongo:
+    build: ./docker/mongo
+    container_name: instabot-mongo
+    restart: always
+    environment:
+      - MONGODB_URI=mongodb://instabot-mongo:27017/instabot
+    volumes:
+      - instabot-mongodb-data:/data/db
+    ports:
+      - "27017:27017"
