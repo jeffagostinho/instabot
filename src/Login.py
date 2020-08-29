@@ -11,7 +11,7 @@ class Login:
         self.password = password
         self.driver = driver
 
-    def enter(self):
+    def execute(self):
         driver = self.driver
         driver.get("https://www.instagram.com")
         time.sleep(3)

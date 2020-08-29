@@ -4,15 +4,17 @@ from src.repositories.FollowerRepository import FollowerRepository
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
-class UploadFollowers:
+class ExtractFollowers:
+    INSTA_URL = 'https://www.instagram.com/'
 
-    def __init__(self, driver, max):
+    def __init__(self, driver, userProfile, maxFollowers):
         self.driver = driver
-        self.max = max
+        self.userProfile = userProfile
+        self.maxFollowers = int(maxFollowers)
         self.followerRepository = FollowerRepository()
 
-    def getUsernamesFollowers(self, username):
-        self.driver.get('https://www.instagram.com/' + username)
+    def getUsernamesFollowers(self):
+        self.driver.get(self.INSTA_URL + self.userProfile)
         followersLink = self.driver.find_element_by_css_selector('ul li a')
         followersLink.click()
         time.sleep(2)
@@ -21,7 +23,7 @@ class UploadFollowers:
 
         followersList.click()
         actionChain = webdriver.ActionChains(self.driver)
-        while (numberOfFollowersInList < self.max):
+        while (numberOfFollowersInList < self.maxFollowers):
             actionChain.key_down(Keys.SPACE).key_up(Keys.SPACE).perform()
             numberOfFollowersInList = len(followersList.find_elements_by_css_selector('li'))
             print(numberOfFollowersInList)
@@ -31,17 +33,17 @@ class UploadFollowers:
             userLink = user.find_element_by_css_selector('a').get_attribute('href')
             print(userLink)
             followersLinks.append(userLink)
-            if (len(followersLinks) == self.max):
+            if (len(followersLinks) == self.maxFollowers):
                 break
 
         usernames = []
         for followerLink in followersLinks:
-            usernames.append(followerLink.replace('https://www.instagram.com/', '').replace('/', ''))
+            usernames.append(followerLink.replace(self.INSTA_URL, '').replace('/', ''))
 
         return usernames
 
-    def upload(self, username):
-        usernames = self.getUsernamesFollowers(username)
+    def execute(self):
+        usernames = self.getUsernamesFollowers()
 
         for username in usernames:
 
