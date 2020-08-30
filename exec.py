@@ -11,7 +11,7 @@ print('\033[1m===================================')
 
 flow = input('\033[94m Fluxo: \033[0m')
 username = input('Seu login: ')
-password = getpass.getpass('Sua senha: ')
+password = input('Sua senha: ')
 
 driver = Driver().get()
 

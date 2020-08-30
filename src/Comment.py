@@ -20,7 +20,7 @@ class Comment:
             driver.get(self.POST_URL + str(self.postId))
 
             try:
-                for i in range(6):
+                for i in range(40):
                     driver.find_element_by_class_name("Ypffh").click()
                     commentInput = driver.find_element_by_class_name("Ypffh")
                     time.sleep(random.randint(2, 5))
@@ -37,7 +37,7 @@ class Comment:
                         "//button[contains(text(), 'Publicar')]"
                     ).click()
                     
-                    time.sleep(random.randint(3, 5))
+                    time.sleep(90)
 
             except Exception as e:
                 print(e)
@@ -46,4 +46,4 @@ class Comment:
                     "//button[contains(text(), 'Publicar')]"
                 ).click()
 
-            time.sleep(300)
+            time.sleep(120)
