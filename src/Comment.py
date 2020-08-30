@@ -1,8 +1,10 @@
 import time
 import random
+from datetime import date
 from config import config
 from helpers import type_like_a_person
 from src.repositories.FollowerRepository import FollowerRepository
+from src.repositories.CommentControlRepository import CommentControlRepository
 
 class Comment:
 
@@ -12,6 +14,7 @@ class Comment:
         self.driver = driver
         self.postId = postId
         self.followerRepository = FollowerRepository()
+        self.commentControlRepository = CommentControlRepository()
 
     def execute(self):
         driver = self.driver
@@ -36,6 +39,8 @@ class Comment:
                     driver.find_element_by_xpath(
                         "//button[contains(text(), 'Publicar')]"
                     ).click()
+
+                    self.saveCommentControl(self.postId)
                     
                     time.sleep(90)
 
@@ -47,3 +52,11 @@ class Comment:
                 ).click()
 
             time.sleep(120)
+    
+    def saveCommentControl(self, postId):
+        today = date.today().strftime("%d/%m/%Y")
+
+        self.commentControlRepository.save({
+            "post_id": postId,
+            "commented_at": today
+        },True)
